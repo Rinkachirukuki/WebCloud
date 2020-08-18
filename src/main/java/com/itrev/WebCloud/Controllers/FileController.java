@@ -15,7 +15,7 @@ public class FileController {
     @GetMapping("/Files")
     public String Files(Model model){
         Iterable<Item> items = itemRepository.findAll();
-        model.addAttribute("itemss",items);
+        model.addAttribute("items",items);
     return "Files";
     }
 }
