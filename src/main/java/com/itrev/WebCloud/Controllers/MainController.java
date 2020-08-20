@@ -2,6 +2,7 @@ package com.itrev.WebCloud.Controllers;
 
 import com.itrev.WebCloud.Models.Item;
 import com.itrev.WebCloud.Repo.ItemRepository;
+import com.itrev.WebCloud.Files.FileMemory.FileManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,8 +28,8 @@ public class MainController {
         public String add_file(@RequestParam("file") MultipartFile file) throws IOException {
             if(file != null){
             	Item a = new Item(file.getOriginalFilename(),file.getContentType(),file.getSize(),file.getBytes());
-		itemRepository.save(a);
-			}
+                FileManager.AddFile(a);
+        }
             return "home";
         }
 
