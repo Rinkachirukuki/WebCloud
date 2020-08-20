@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+ <div th:each="el :${File}" class="alert alert-info mt-2">
+     <h1 th:text="${el.getTitle()}"/>
+ </div>
+</body>
+</html>
