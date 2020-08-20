@@ -8,6 +8,10 @@
 <body>
  <div th:each="el :${File}" class="alert alert-info mt-2">
      <h1 th:text="${el.getTitle()}"/>
+     <h1 th:text="${el.getUploadDate().toString()}"/>
+     <h1 th:text="${el.getChangeDate().toString()}"/>
+     <h1 th:text="${el.getType()}"/>
+     <h1 th:text="${el.getSize().toString()}"/>
  </div>
 </body>
 </html>

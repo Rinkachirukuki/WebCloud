@@ -14,17 +14,18 @@ public class Item {
     private String title; //имя файла
     private String type;// тип файла
     private long size; //размер файла
-    private Date upload_date;//дата загрузки
-    private Date change_date;//дата изменения
+    private Date uploadDate;//дата загрузки
+    private Date changeDate;//дата изменения
     private byte[] file; //содержимое файла
 
+    public Item(){};
     public Item(String title, String type, long size, byte[] file) {
         this.title = title;
         this.type = type;
         this.size = size;
         this.file = file;
-        this.upload_date=new Date();
-        this.change_date=new Date();
+        this.uploadDate=new Date();
+        this.changeDate=new Date();
     }
     
     
@@ -52,20 +53,20 @@ public class Item {
         this.size = size;
     }
 
-    public Date getUpload_date() {
-        return upload_date;
+    public Date getUploadDate() {
+        return uploadDate;
     }
 
-    public void setUpload_date(Date upload_date) {
-        this.upload_date = upload_date;
+    public void setUploadDate(Date upload_date) {
+        this.uploadDate = upload_date;
     }
 
-    public Date getChange_date() {
-        return change_date;
+    public Date getChangeDate() {
+        return changeDate;
     }
 
-    public void setChange_date(Date change_date) {
-        this.change_date = change_date;
+    public void setChangeDate(Date change_date) {
+        this.changeDate = change_date;
     }
 
     public byte[] getFile() {
