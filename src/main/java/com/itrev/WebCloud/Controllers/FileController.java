@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
@@ -27,6 +28,13 @@ public class FileController {
     @GetMapping("/{FileName}")
     public String FileInfo(@PathVariable(value = "FileName") String name, Model model) throws Exception {
         Item res = FileMemory.FileManager.ReadFile(name);
+        model.addAttribute("File", res);
+        return "FileInfo";
+    }
+    @GetMapping("/d/{FileName}")
+    public String FileDownload(@PathVariable(value = "FileName") String name, Model model) throws Exception {
+        Item res = FileMemory.FileManager.ReadFile(name);
+
         model.addAttribute("File", res);
         return "FileInfo";
     }
