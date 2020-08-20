@@ -1,5 +1,6 @@
 package com.itrev.WebCloud.Controllers;
 
+import com.itrev.WebCloud.Files.FileMemory;
 import com.itrev.WebCloud.Models.Item;
 import com.itrev.WebCloud.Repo.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,9 @@ public class FileController {
         model.addAttribute("items",items);
     return "Files";
     }
-    @GetMapping("/{id}")
-    public String FileInfo(@PathVariable(value = "id") Long id, Model model){
-        Optional<Item> item = itemRepository.findById(id);
-        ArrayList<Item> res = new ArrayList<>();
-        item.ifPresent(res::add);
+    @GetMapping("/{FileName}")
+    public String FileInfo(@PathVariable(value = "FileName") String name, Model model) throws Exception {
+        Item res = FileMemory.FileManager.ReadFile(name);
         model.addAttribute("File", res);
         return "FileInfo";
     }
