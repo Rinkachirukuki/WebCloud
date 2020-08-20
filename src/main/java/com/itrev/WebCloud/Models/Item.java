@@ -18,6 +18,16 @@ public class Item {
     private Date change_date;//дата изменения
     private byte[] file; //содержимое файла
 
+    public Item(String title, String type, long size, byte[] file) {
+        this.title = title;
+        this.type = type;
+        this.size = size;
+        this.file = file;
+        this.upload_date=new Date();
+        this.change_date=new Date();
+    }
+    
+    
     public long getId() {
         return id;
     }

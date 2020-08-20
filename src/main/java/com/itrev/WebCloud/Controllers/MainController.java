@@ -26,13 +26,8 @@ public class MainController {
         @PostMapping("/")
         public String add_file(@RequestParam("file") MultipartFile file) throws IOException {
             if(file != null){
-            	Item a = new Item();
-            	a.setFile(file.getBytes());
-            	a.setTitle(file.getOriginalFilename());
-            	a.setType(file.getContentType());
-            	a.setChange_date(new Date());
-            	a.setUpload_date(new Date());
-				itemRepository.save(a);
+            	Item a = new Item(file.getOriginalFilename(),file.getContentType(),file.getSize(),file.getBytes());
+		itemRepository.save(a);
 			}
             return "home";
         }
