@@ -31,13 +31,13 @@ public class FileMemory {
             if(!fileSystem.containsKey(fileName)) throw new Exception("Файл с таким именем не существует!");
             fileSystem.remove(fileName);
         }
-        private static void RenameFile(String fileName)throws Exception{
+        public static void RenameFile(String fileName, String newFileName)throws Exception{
             if(!fileSystem.containsKey(fileName)) throw new Exception("Файл с таким именем не существует!");
             Item temp = fileSystem.get(fileName);
             String ex=temp.getTitle();
-            String type= ex.split(".")[1];
+            //String type= ex.split(".")[1];
             fileSystem.remove(ex);
-            fileSystem.put(fileName+type, temp);
+            fileSystem.put(newFileName, temp);
         }
         public static String[] GetFileNames(){
             String[] a=new String[fileSystem.size()];

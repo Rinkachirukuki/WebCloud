@@ -11,15 +11,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
@@ -53,5 +48,13 @@ public class FileController {
                 .contentLength(res.getSize())
                 .body(inRes);
         return resEntity;
+    }
+    @PostMapping("/{filename}")
+    public String add_file(@PathVariable("filename") String oldName, @RequestParam("rename") String newName) throws Exception {
+        if(newName != ""){
+            Item a = FileManager.ReadFile(oldName);
+            FileManager.RenameFile(oldName,newName);
+        }
+        return "redirect:/Files";
     }
 }
