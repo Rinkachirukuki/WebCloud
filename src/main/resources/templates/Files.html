@@ -10,7 +10,9 @@
     <div class="container mt-5">
         <h1>Файлы</h1>
         <div th:each = "el : ${items}">
-        <h3 th:text = "${el}"/>
+        <a th:text = "${el}"/>
+            <a th:href="'/' + ${el}">О файле</a>
+            <a th:href="'/d/' + ${el}">Скачать</a>
         </div>
     </div>
 
