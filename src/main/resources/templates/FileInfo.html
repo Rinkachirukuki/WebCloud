@@ -12,6 +12,12 @@
      <h1 th:text="${el.getChangeDate().toString()}"/>
      <h1 th:text="${el.getType()}"/>
      <h1 th:text="${el.getSize().toString()}"/>
+     <div> 
+         <form method="post"> 
+             <input type="text" name="rename"/>
+             <button type="submit"> Переименовать файл </button>
+         </form>  
+     </div>
  </div>
 </body>
 </html>

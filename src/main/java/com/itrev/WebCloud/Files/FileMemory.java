@@ -34,8 +34,10 @@ public class FileMemory {
         private static void RenameFile(String fileName)throws Exception{
             if(!fileSystem.containsKey(fileName)) throw new Exception("Файл с таким именем не существует!");
             Item temp = fileSystem.get(fileName);
-            temp.setTitle(fileName);
-            fileSystem.put(fileName, temp);
+            String ex=temp.getTitle();
+            String type= ex.split(".")[1];
+            fileSystem.remove(ex);
+            fileSystem.put(fileName+type, temp);
         }
         public static String[] GetFileNames(){
             String[] a=new String[fileSystem.size()];
