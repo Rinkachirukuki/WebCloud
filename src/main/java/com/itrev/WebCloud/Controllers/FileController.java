@@ -1,8 +1,9 @@
 package com.itrev.WebCloud.Controllers;
 
-import com.itrev.WebCloud.Files.FileMemory;
+import com.itrev.WebCloud.Files.FileMemory.FileManager;
 import com.itrev.WebCloud.Models.Item;
 import com.itrev.WebCloud.Repo.ItemRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -30,19 +31,19 @@ public class FileController {
 
     @GetMapping("/Files")
     public String Files(Model model){
-        Iterable<Item> items = itemRepository.findAll();
-        model.addAttribute("items",items);
+        String[] names = FileManager.GetFileNames();
+        model.addAttribute("items",names);
     return "Files";
     }
     @GetMapping("/{FileName}")
     public String FileInfo(@PathVariable(value = "FileName") String name, Model model) throws Exception {
-        Item res = FileMemory.FileManager.ReadFile(name);
+        Item res = FileManager.ReadFile(name);
         model.addAttribute("File", res);
         return "FileInfo";
     }
     @RequestMapping(value = "/d/{FileName}", method = RequestMethod.GET)
     public ResponseEntity<Object> FileDownload(@PathVariable(value = "FileName") String name) throws Exception {
-        Item res = FileMemory.FileManager.ReadFile(name);
+        Item res = FileManager.ReadFile(name);
         InputStream inStr = new ByteArrayInputStream(res.getFile());
         InputStreamResource inRes = new InputStreamResource(inStr);
         HttpHeaders headers = new HttpHeaders();

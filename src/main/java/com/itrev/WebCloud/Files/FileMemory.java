@@ -6,8 +6,11 @@ package com.itrev.WebCloud.Files;
  * and open the template in the editor.
  */
 import com.itrev.WebCloud.Models.Item;
+import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.Arrays;
 /**
  *
  * @author Matt
@@ -33,6 +36,12 @@ public class FileMemory {
             Item temp = fileSystem.get(fileName);
             temp.setTitle(fileName);
             fileSystem.put(fileName, temp);
+        }
+        public static String[] GetFileNames(){
+            String[] a=new String[fileSystem.size()];
+            a=fileSystem.keySet().toArray(a);
+            Arrays.sort(a);
+            return a;
         }
         
     }
