@@ -5,6 +5,7 @@ import com.itrev.WebCloud.Models.Item;
 import com.itrev.WebCloud.Repo.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -44,7 +45,12 @@ public class FileController {
         Item res = FileMemory.FileManager.ReadFile(name);
         InputStream inStr = new ByteArrayInputStream(res.getFile());
         InputStreamResource inRes = new InputStreamResource(inStr);
-        ResponseEntity<Object> resEntity = ResponseEntity.ok().contentType(MediaType.parseMediaType(res.getType())).body(inRes);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-disposition",String.format("attachment", res.getTitle()));
+        ResponseEntity<Object> resEntity = ResponseEntity.ok().headers(headers)
+                .contentType(MediaType.parseMediaType(res.getType()))
+                .contentLength(res.getSize())
+                .body(inRes);
         return resEntity;
     }
 }
