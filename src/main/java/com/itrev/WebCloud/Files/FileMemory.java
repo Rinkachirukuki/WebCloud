@@ -27,7 +27,7 @@ public class FileMemory {
             if(!fileSystem.containsKey(fileName)) throw new Exception("Файл с таким именем не существует!");
             return fileSystem.get(fileName);
         }
-        private static void RemoveFile(String fileName)throws Exception{
+        public static void RemoveFile(String fileName)throws Exception{
             if(!fileSystem.containsKey(fileName)) throw new Exception("Файл с таким именем не существует!");
             fileSystem.remove(fileName);
         }

@@ -57,4 +57,9 @@ public class FileController {
         }
         return "redirect:/Files";
     }
+    @RequestMapping(value = "/remove/{FileName}", method = RequestMethod.GET)
+    public String FileDelete(@PathVariable(value = "FileName") String name) throws Exception {
+        FileManager.RemoveFile(name);
+        return "redirect:/Files";
+    }
 }
