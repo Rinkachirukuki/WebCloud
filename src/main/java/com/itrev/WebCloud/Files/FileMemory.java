@@ -6,9 +6,11 @@ package com.itrev.WebCloud.Files;
  * and open the template in the editor.
  */
 import com.itrev.WebCloud.Models.Item;
+import com.sun.management.GarbageCollectionNotificationInfo;
 import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.WeakHashMap;
 import java.util.Set;
 import java.util.Arrays;
 /**
@@ -18,7 +20,7 @@ import java.util.Arrays;
 public class FileMemory {
     public static class FileManager{
         private static Map<String, Item> fileSystem=new HashMap <String,Item>();
-   
+
         public static void AddFile(Item file){
             if(!fileSystem.containsKey(file.getTitle())) 
                 fileSystem.put(file.getTitle(), file);
@@ -27,6 +29,7 @@ public class FileMemory {
             if(!fileSystem.containsKey(fileName)) throw new Exception("Файл с таким именем не существует!");
             return fileSystem.get(fileName);
         }
+
         public static void RemoveFile(String fileName)throws Exception{
             if(!fileSystem.containsKey(fileName)) throw new Exception("Файл с таким именем не существует!");
             fileSystem.remove(fileName);
@@ -34,9 +37,9 @@ public class FileMemory {
         public static void RenameFile(String fileName, String newFileName)throws Exception{
             if(!fileSystem.containsKey(fileName)) throw new Exception("Файл с таким именем не существует!");
             Item temp = fileSystem.get(fileName);
-            String ex=temp.getTitle();
-            //String type= ex.split(".")[1];
-            fileSystem.remove(ex);
+            temp.setTitle(newFileName);
+            temp.setChangeDate(new java.util.Date());
+            fileSystem.remove(fileName);
             fileSystem.put(newFileName, temp);
         }
         public static String[] GetFileNames(){
@@ -45,6 +48,7 @@ public class FileMemory {
             Arrays.sort(a);
             return a;
         }
+
         
     }
 }
