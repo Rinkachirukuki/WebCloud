@@ -26,8 +26,7 @@ public class FileController {
 
     @GetMapping("/Files")
     public String Files(Model model){
-        String[] names = FileManager.GetFileNames();
-        model.addAttribute("items",names);
+        model.addAttribute("fileInfo", FileManager.GetItemsInfo());
     return "Files";
     }
     @GetMapping("/{FileName}")

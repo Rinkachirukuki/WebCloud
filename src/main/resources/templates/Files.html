@@ -9,11 +9,11 @@
 
     <div class="container mt-5">
         <h1>Файлы</h1>
-        <div th:each = "el : ${items}">
-        <a th:text = "${el}"/>
-            <a th:href="'/' + ${el}">О файле</a>
-            <a th:href="'/d/' + ${el}">Скачать</a>
-            <a th:href="'/remove/' + ${el}">Удалить</a>
+        <div th:each = "el : ${fileInfo}">
+        <a th:text = "${el[0]} + ' ' +  ${el[1]}+ ' ' +  ${el[2]}+ ' ' +  ${el[3]}+ ' ' +  ${el[4]}"/>
+            <a th:href="'/' + ${el[0]}">О файле</a>
+            <a th:href="'/d/' + ${el[0]}">Скачать</a>
+            <a th:href="'/remove/' + ${el[0]}">Удалить</a>
         </div>
     </div>
 

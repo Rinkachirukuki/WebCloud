@@ -48,6 +48,16 @@ public class FileMemory {
             Arrays.sort(a);
             return a;
         }
+        public static String[][] GetItemsInfo(){
+            String[][] a=new String[fileSystem.size()][];
+            int i = 0;
+            for (Map.Entry<String, Item> entry : fileSystem.entrySet()) {
+                Item  h = entry.getValue();
+                a[i] = h.toStringArray();
+                i++;
+            }
+            return a;
+        }
 
         
     }

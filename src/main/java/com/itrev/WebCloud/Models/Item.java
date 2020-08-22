@@ -1,9 +1,7 @@
 package com.itrev.WebCloud.Models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Arrays;
 import java.util.Date;
 
 @Entity
@@ -83,5 +81,13 @@ public class Item {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @Override
+    public String toString() {
+        return  title + ' ' + type + ' ' + size + ' ' + uploadDate + ' ' + changeDate;
+    }
+    public String[] toStringArray() {
+        return  new String[] {title, type, String.valueOf(size),  String.valueOf(uploadDate),  String.valueOf(changeDate)};
     }
 }
