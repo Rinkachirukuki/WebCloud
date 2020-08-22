@@ -24,11 +24,21 @@ public class FileController {
     @Autowired
     private ItemRepository itemRepository;
 
-    @GetMapping("/Files")
+    @GetMapping("/")
     public String Files(Model model){
         model.addAttribute("fileInfo", FileManager.GetItemsInfo());
     return "Files";
     }
+
+    @PostMapping("/")
+    public String add_file(@RequestParam("file") MultipartFile file) throws IOException {
+        if(file != null){
+            Item a = new Item(file.getOriginalFilename(),file.getContentType(),file.getSize(),file.getBytes());
+            FileManager.AddFile(a);
+        }
+        return "redirect:/";
+    }
+
     @GetMapping("/{FileName}")
     public String FileInfo(@PathVariable(value = "FileName") String name, Model model) throws Exception {
         Item res = FileManager.ReadFile(name);

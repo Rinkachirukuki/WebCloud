@@ -9,6 +9,12 @@
 
     <div class="container mt-5">
         <h1>Файлы</h1>
+
+        <form method="post" enctype="multipart/form-data">
+            <input type="file" name="file"/>
+            <button type="submit">Загрузить</button>
+        </form>
+        <p/>
         <div th:each = "el : ${fileInfo}">
         <a th:text = "${el[0]} + ' ' +  ${el[1]}+ ' ' +  ${el[2]}+ ' ' +  ${el[3]}+ ' ' +  ${el[4]}"/>
             <a th:href="'/' + ${el[0]}">О файле</a>
