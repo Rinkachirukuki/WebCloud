@@ -3,7 +3,7 @@ package com.itrev.WebCloud.Controllers;
 import com.itrev.WebCloud.Files.FileMemory.FileManager;
 import com.itrev.WebCloud.Models.Item;
 import com.itrev.WebCloud.Repo.ItemRepository;
-
+import com.itrev.WebCloud.Validator.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -25,15 +25,20 @@ public class FileController {
     private ItemRepository itemRepository;
 
     @GetMapping("/")
-    public String Files(Model model){
+    public String Files(@RequestParam(defaultValue = "0", value="error") int err, Model model){
         model.addAttribute("fileInfo", FileManager.GetItemsInfo());
+        model.addAttribute("errInfo",Validator.getDescription(err));
     return "Files";
     }
 
     @PostMapping("/")
     public String add_file(@RequestParam("file") MultipartFile file) throws IOException {
         if(file != null){
-            Item a = new Item(file.getOriginalFilename(),file.getContentType(),file.getSize(),file.getBytes());
+            String name=file.getOriginalFilename();
+            long size=file.getSize();
+            if (!Validator.ValidateSize(size)) return "redirect:/?error=1";
+            if (!Validator.ValidateType(name)) return "redirect:/?error=2";
+            Item a = new Item(name,file.getContentType(),size,file.getBytes());
             FileManager.AddFile(a);
         }
         return "redirect:/";
@@ -59,16 +64,16 @@ public class FileController {
         return resEntity;
     }
     @PostMapping("/{filename}")
-    public String add_file(@PathVariable("filename") String oldName, @RequestParam("rename") String newName) throws Exception {
+    public String rename_file(@PathVariable("filename") String oldName, @RequestParam("rename") String newName) throws Exception {
         if(newName != ""){
             Item a = FileManager.ReadFile(oldName);
             FileManager.RenameFile(oldName,newName);
         }
-        return "redirect:/Files";
+        return "redirect:/";
     }
     @RequestMapping(value = "/remove/{FileName}", method = RequestMethod.GET)
     public String FileDelete(@PathVariable(value = "FileName") String name) throws Exception {
         FileManager.RemoveFile(name);
-        return "redirect:/Files";
+        return "redirect:/";
     }
 }
