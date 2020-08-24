@@ -66,11 +66,8 @@ public class FileMemory {
                         dataType == h.getTitle().substring(h.getTitle().lastIndexOf(".")).toLowerCase()){
                     list.add(h.toStringArray());
                 }
-
             }
             return list;
         }
-
-        
     }
 }

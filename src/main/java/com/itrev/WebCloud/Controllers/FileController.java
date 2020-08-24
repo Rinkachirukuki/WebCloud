@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
@@ -25,9 +27,16 @@ public class FileController {
     private ItemRepository itemRepository;
 
     @GetMapping("/")
-    public String Files(@RequestParam(defaultValue = "0", value="error") int err,@RequestParam(defaultValue = "0", value="error") String filter, Model model){
-        model.addAttribute("fileInfo", FileManager.GetItemsInfo());
+    public String Files(@RequestParam(defaultValue = "0", value="error") int err,
+                        @RequestParam(defaultValue = "", value="info") String filter,
+                        @RequestParam(defaultValue = "Sat Aug 16 07:12:55 GMT 292278994", value="fromD") Date fromD,
+                        @RequestParam(defaultValue = "LocalDate.Max", value="toD") Date toD,
+                        @RequestParam(defaultValue = "", value="type") String type,Model model){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date a = new Date();
+        model.addAttribute("fileInfo", FileManager.GetItemsInfo(filter,fromD,toD,type));
         model.addAttribute("errInfo",Validator.getDescription(err));
+
     return "Files";
     }
 
