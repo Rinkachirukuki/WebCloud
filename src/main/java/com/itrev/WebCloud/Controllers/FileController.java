@@ -29,12 +29,11 @@ public class FileController {
     @GetMapping("/")
     public String Files(@RequestParam(defaultValue = "0", value="error") int err,
                         @RequestParam(defaultValue = "", value="info") String filter,
-                        @RequestParam(defaultValue = "Sat Aug 16 07:12:55 GMT 292278994", value="fromD") Date fromD,
-                        @RequestParam(defaultValue = "LocalDate.Max", value="toD") Date toD,
-                        @RequestParam(defaultValue = "", value="type") String type,Model model){
+                        @RequestParam(defaultValue = "0000-01-07", value="fromD") String fromD,
+                        @RequestParam(defaultValue = "2100-01-01", value="toD") String toD,
+                        @RequestParam(defaultValue = "", value="type") String type,Model model) throws Exception{
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Date a = new Date();
-        model.addAttribute("fileInfo", FileManager.GetItemsInfo(filter,fromD,toD,type));
+        model.addAttribute("fileInfo", FileManager.GetItemsInfo(filter,format.parse(fromD),format.parse(toD),type));
         model.addAttribute("errInfo",Validator.getDescription(err));
 
     return "Files";

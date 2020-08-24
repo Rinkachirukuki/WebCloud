@@ -26,8 +26,8 @@
                 <input type="text" name="info">
                 <input type="date" name="fromD"/>
                 <input type="date" name="toD"/>
-                <select>
-                    <option th:each = "el : ${fileInfo}"><a text = ${el[0]}></a></option>
+                <select name="type">
+                    <option th:each = "el : ${fileInfo}" th:text ="${el[0]}" th:value ="${el[0]}"></option>
                 </select>
                 <button type="submit">Поиск</button>
             </form>
