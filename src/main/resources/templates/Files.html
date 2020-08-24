@@ -21,6 +21,20 @@
             <a th:href="'/d/' + ${el[0]}">Скачать</a>
             <a th:href="'/remove/' + ${el[0]}">Удалить</a>
         </div>
+        <div>Фильтр
+            <form method="get">
+                <input type="text" name="info">
+                <input type="date" name="fromD"/>
+                <input type="date" name="toD"/>
+                <select>
+                    <option>A</option>
+                    <option>B</option>
+                    <option>C</option>
+                    <option>D</option>
+                </select>
+                <button type="submit">Поиск</button>
+            </form>
+        </div>
     </div>
 
 
