@@ -8,11 +8,9 @@ package com.itrev.WebCloud.Files;
 import com.itrev.WebCloud.Models.Item;
 import com.sun.management.GarbageCollectionNotificationInfo;
 import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.WeakHashMap;
-import java.util.Set;
-import java.util.Arrays;
+
+import java.util.*;
+
 /**
  *
  * @author Matt
@@ -57,6 +55,20 @@ public class FileMemory {
                 i++;
             }
             return a;
+        }
+        public static List<String[]> GetItemsInfo(String Info, Date fromD, Date toD, String dataType){
+            List<String[]> list = new ArrayList<>();
+            for (Map.Entry<String, Item> entry : fileSystem.entrySet()) {
+                Item  h = entry.getValue();
+                if (h.toString().contains(Info) &&
+                        h.getUploadDate().after(fromD) &&
+                        h.getUploadDate().before(toD) &&
+                        dataType == h.getTitle().substring(h.getTitle().lastIndexOf(".")).toLowerCase()){
+                    list.add(h.toStringArray());
+                }
+
+            }
+            return list;
         }
 
         

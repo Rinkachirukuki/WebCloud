@@ -25,7 +25,7 @@ public class FileController {
     private ItemRepository itemRepository;
 
     @GetMapping("/")
-    public String Files(@RequestParam(defaultValue = "0", value="error") int err, Model model){
+    public String Files(@RequestParam(defaultValue = "0", value="error") int err,@RequestParam(defaultValue = "0", value="error") String filter, Model model){
         model.addAttribute("fileInfo", FileManager.GetItemsInfo());
         model.addAttribute("errInfo",Validator.getDescription(err));
     return "Files";
@@ -33,7 +33,7 @@ public class FileController {
 
     @PostMapping("/")
     public String add_file(@RequestParam("file") MultipartFile file) throws IOException {
-        if(file != null){
+        if(!file.isEmpty()){
             String name=file.getOriginalFilename();
             long size=file.getSize();
             if (!Validator.ValidateSize(size)) return "redirect:/?error=1";
