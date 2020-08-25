@@ -16,7 +16,7 @@
         </form>
         <p/>
         <div th:each = "el : ${fileInfo}">
-        <a th:text = "${el[0]} + ' ' +  ${el[1]}+ ' ' +  ${el[2]}+ ' ' +  ${el[3]}+ ' ' +  ${el[4]}"/>
+        <a th:text = "${el[0]} + ' ' +  ${el[1]} + ' ' +  ${el[2]} + ' ' +  ${el[3]} + ' ' +  ${el[4]}"/>
             <a th:href="'/' + ${el[0]}">О файле</a>
             <a th:href="'/d/' + ${el[0]}">Скачать</a>
             <a th:href="'/remove/' + ${el[0]}">Удалить</a>
@@ -27,7 +27,8 @@
                 <input type="date" name="fromD"/>
                 <input type="date" name="toD"/>
                 <select name="type">
-                    <option th:each = "el : ${fileTypes}" th:text ="${el}" th:value ="${el}"></option>
+                    <option value = "">All</option>
+                    <option th:each = "el : ${dataTypes}" th:text ="${el}" th:value ="${el}"></option>
                 </select>
                 <button type="submit">Поиск</button>
             </form>

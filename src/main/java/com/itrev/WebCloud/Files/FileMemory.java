@@ -60,7 +60,8 @@ public class FileMemory {
                 if (h.toString().contains(Info) &&
                         h.getUploadDate().after(fromD) &&
                         h.getUploadDate().before(toD) &&
-                        dataType.contains(h.getTitle().substring(h.getTitle().lastIndexOf(".")).toLowerCase())){
+                        h.getTitle().substring(h.getTitle().lastIndexOf(".")).toLowerCase().contains(dataType))
+                        {
                     list.add(h.toStringArray());
                 }
             }
