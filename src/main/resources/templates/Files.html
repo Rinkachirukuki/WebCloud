@@ -15,13 +15,26 @@
             <p text="" th:text="${errInfo}"/>
         </form>
         <p/>
+        <form method="post" enctype="multipart/form-data">
         <div th:each = "el : ${fileInfo}">
-            <input type="checkbox" th:name="${el[0]}"/>
+            <input type="checkbox" th:value="${el[0]}" th:name="nameList"/>
         <a th:text = "${el[0]} + ' ' +  ${el[1]} + ' ' +  ${el[2]} + ' ' +  ${el[3]} + ' ' +  ${el[4]}"/>
             <a th:href="'/' + ${el[0]}">О файле</a>
             <a th:href="'/d/' + ${el[0]}">Скачать</a>
             <a th:href="'/remove/' + ${el[0]}">Удалить</a>
         </div>
+            <button type="submit">Скачать файлы</button>
+        </form>
+
+        <form method="post" enctype="multipart/form-data">
+            <input type="checkbox" value="1" name="nameList"/>
+            <input type="checkbox" value="2" name="nameList"/>
+            <input type="checkbox" value="3" name="nameList"/>
+            <button type="submit">Скачать файлы</button>
+        </form>
+
+
+
         <div>Фильтр
             <form method="get">
                 <input type="text" name="info">

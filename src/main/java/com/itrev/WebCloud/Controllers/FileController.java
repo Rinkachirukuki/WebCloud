@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -31,17 +32,20 @@ public class FileController {
                         @RequestParam(defaultValue = "", value="info") String filter,
                         @RequestParam(defaultValue = "0000-01-07", value="fromD") String fromD,
                         @RequestParam(defaultValue = "2100-01-01", value="toD") String toD,
-                        @RequestParam(defaultValue = "", value="type") String type,Model model) throws Exception{
+                        @RequestParam(defaultValue = "", value="type") String type,
+                        Model model) throws Exception{
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         model.addAttribute("fileInfo", FileManager.GetItemsInfo(filter,format.parse(fromD),format.parse(toD),type));
         model.addAttribute("errInfo",Validator.getDescription(err));
         model.addAttribute("dataTypes",FileManager.GetItemsTypes());
-
     return "Files";
     }
 
+
+
     @PostMapping("/")
-    public String add_file(@RequestParam("file") MultipartFile file) throws IOException {
+    public String add_file(@RequestParam("file") MultipartFile file,
+                           @RequestParam("nameList[]") List<String> nameList) throws IOException {
         if(!file.isEmpty()){
             String name=file.getOriginalFilename();
             long size=file.getSize();
@@ -51,6 +55,11 @@ public class FileController {
             FileManager.AddFile(a);
         }
         return "redirect:/";
+    }
+    public void foo(@RequestParam("nameList[]") List<String> nameList) {
+        for(String number : nameList) {
+            System.out.println(number);
+        }
     }
 
     @GetMapping("/{FileName}")
