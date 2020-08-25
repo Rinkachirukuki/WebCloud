@@ -35,6 +35,7 @@ public class FileController {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         model.addAttribute("fileInfo", FileManager.GetItemsInfo(filter,format.parse(fromD),format.parse(toD),type));
         model.addAttribute("errInfo",Validator.getDescription(err));
+        model.addAttribute("dataTypes",FileManager.GetItemsTypes());
 
     return "Files";
     }

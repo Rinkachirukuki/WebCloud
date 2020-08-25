@@ -46,15 +46,12 @@ public class FileMemory {
             Arrays.sort(a);
             return a;
         }
-        public static String[][] GetItemsInfo(){
-            String[][] a=new String[fileSystem.size()][];
-            int i = 0;
+        public static List<String[]> GetItemsInfo(){
+            List<String[]> list = new ArrayList<>();
             for (Map.Entry<String, Item> entry : fileSystem.entrySet()) {
-                Item  h = entry.getValue();
-                a[i] = h.toStringArray();
-                i++;
+                list.add(entry.getValue().toStringArray());
             }
-            return a;
+            return list;
         }
         public static List<String[]> GetItemsInfo(String Info, Date fromD, Date toD, String dataType){
             List<String[]> list = new ArrayList<>();
@@ -65,6 +62,17 @@ public class FileMemory {
                         h.getUploadDate().before(toD) &&
                         dataType.contains(h.getTitle().substring(h.getTitle().lastIndexOf(".")).toLowerCase())){
                     list.add(h.toStringArray());
+                }
+            }
+            return list;
+        }
+        public static List<String> GetItemsTypes(){
+            List<String> list = new ArrayList<>();
+            for (Map.Entry<String, Item> entry : fileSystem.entrySet()) {
+                Item  h = entry.getValue();
+                String dataType = h.getTitle().substring(h.getTitle().lastIndexOf(".")).toLowerCase();
+                if(!list.contains(dataType)){
+                    list.add(dataType);
                 }
             }
             return list;
