@@ -57,10 +57,14 @@ public class FileController {
         return "redirect:/Upload";
     }
     @PostMapping("/")
-    public String add_file(@RequestParam("nameList") List<String> nameList) throws IOException {
+    public ResponseEntity<Object> add_file(@RequestParam("nameList") List<String> nameList) throws Exception {
+        HttpHeaders headers = new HttpHeaders();
 
-        Archiver.makeArchive(nameList);
-        return "redirect:/";
+        ResponseEntity<Object> resEntity = ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + new Date() + ".zip")
+                .contentType(MediaType.parseMediaType("application/x-zip-compressed"))
+                .body(Archiver.makeArchive(nameList));
+        return resEntity;
     }
     public void foo(@RequestParam("nameList[]") List<String> nameList) {
         for(String number : nameList) {

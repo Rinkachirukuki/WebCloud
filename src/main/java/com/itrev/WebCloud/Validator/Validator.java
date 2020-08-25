@@ -14,7 +14,7 @@ import java.util.Arrays;
 public class Validator {//Класс валидатора. Содержит методы проверки размера файла и формата файла.
     // Размер ограничен константой 15 Мбайт. Известные форматы находятся в validTypes.
     // Также валидатор хранит вспомогательное поле errorDescription, необходимое для вывода информации об ошибке на экран.
-    private static List<String> validTypes=Arrays.asList(new String[]{".png",".bmp",".jpg",".jpeg",".docx",".doc",".xls",".xlsx",".ppt",".pptx",".pdf",".xml",".html",".mp3",".mp4"});
+    private static List<String> validTypes=Arrays.asList(new String[]{".png",".bmp",".jpg",".jpeg",".docx",".doc",".xls",".xlsx",".ppt",".pptx",".pdf",".xml",".html",".mp3",".mp4",".zip"});
     private static String[] errorDescriptions={"","Ошибка валидации. Превышен максимальный размер файла (15 Мбайт)","Ошибка валидации. Невозможно определить тип файла"};
     public static boolean ValidateSize(long size){//размер
         return size<=15*(Math.pow(2, 20));
