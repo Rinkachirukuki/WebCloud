@@ -9,19 +9,23 @@ import java.io.FileOutputStream;
 import java.util.zip.*;
 public class Archiver {
     public static InputStreamResource makeArchive(String[] names) throws Exception{
-        ZipOutputStream archive=new ZipOutputStream(new FileOutputStream("/output.zip"));
+        String outname=names[0]+" и "+(names.length-1)+" других файлов.zip";
+        File temp=new File(outname);
+        if (temp.exists()){
+            temp.delete();
+            temp.createNewFile();
+        }
+        ZipOutputStream archive=new ZipOutputStream(new FileOutputStream(outname));
         for (String n: names) {
-            byte[] temp= FileManager.ReadFile(n).getFile();
+            byte[] buff= FileManager.ReadFile(n).getFile();
             ZipEntry entry=new ZipEntry(n);
             archive.putNextEntry(entry);
-            archive.write(temp);
+            archive.write(buff);
             archive.closeEntry();
         }
         archive.close();
-        InputStreamResource nova=new InputStreamResource(new FileInputStream("/output.zip"));
-
-
-
-        return null;
+        InputStreamResource arc=new InputStreamResource(new FileInputStream(outname));
+        temp.delete();
+        return arc;
     }
 }
