@@ -1,5 +1,6 @@
 package com.itrev.WebCloud.Controllers;
 
+import com.itrev.WebCloud.Archiver.Archiver;
 import com.itrev.WebCloud.Files.FileMemory.FileManager;
 import com.itrev.WebCloud.Models.Item;
 import com.itrev.WebCloud.Repo.ItemRepository;
@@ -28,24 +29,23 @@ public class FileController {
     private ItemRepository itemRepository;
 
     @GetMapping("/")
-    public String Files(@RequestParam(defaultValue = "0", value="error") int err,
-                        @RequestParam(defaultValue = "", value="info") String filter,
+    public String Files(@RequestParam(defaultValue = "", value="info") String filter,
                         @RequestParam(defaultValue = "0000-01-07", value="fromD") String fromD,
                         @RequestParam(defaultValue = "2100-01-01", value="toD") String toD,
                         @RequestParam(defaultValue = "", value="type") String type,
                         Model model) throws Exception{
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         model.addAttribute("fileInfo", FileManager.GetItemsInfo(filter,format.parse(fromD),format.parse(toD),type));
-        model.addAttribute("errInfo",Validator.getDescription(err));
         model.addAttribute("dataTypes",FileManager.GetItemsTypes());
     return "Files";
     }
-
-
-
-    @PostMapping("/")
-    public String add_file(@RequestParam("file") MultipartFile file,
-                           @RequestParam("nameList[]") List<String> nameList) throws IOException {
+    @GetMapping("/Upload")
+    public String FileUploader(@RequestParam(defaultValue = "0", value="error") int err, Model model) throws Exception{
+        model.addAttribute("errInfo",Validator.getDescription(err));
+        return "FileUploader";
+    }
+    @PostMapping("/Upload")
+    public String FileUploader(@RequestParam("file") MultipartFile file) throws Exception{
         if(!file.isEmpty()){
             String name=file.getOriginalFilename();
             long size=file.getSize();
@@ -54,6 +54,12 @@ public class FileController {
             Item a = new Item(name,file.getContentType(),size,file.getBytes());
             FileManager.AddFile(a);
         }
+        return "redirect:/Upload";
+    }
+    @PostMapping("/")
+    public String add_file(@RequestParam("nameList") List<String> nameList) throws IOException {
+
+        Archiver.makeArchive(nameList);
         return "redirect:/";
     }
     public void foo(@RequestParam("nameList[]") List<String> nameList) {
