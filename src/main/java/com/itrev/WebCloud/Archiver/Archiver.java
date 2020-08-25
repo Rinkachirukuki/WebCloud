@@ -6,10 +6,11 @@ import org.springframework.core.io.InputStreamResource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.List;
 import java.util.zip.*;
 public class Archiver {
-    public static InputStreamResource makeArchive(String[] names) throws Exception{
-        String outname=names[0]+" и "+(names.length-1)+" других файлов.zip";
+    public static InputStreamResource makeArchive(List<String> names) throws Exception{
+        String outname="Archiev.zip";
         File temp=new File(outname);
         if (temp.exists()){
             temp.delete();
