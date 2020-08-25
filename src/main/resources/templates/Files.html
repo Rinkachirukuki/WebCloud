@@ -16,6 +16,7 @@
         </form>
         <p/>
         <div th:each = "el : ${fileInfo}">
+            <input type="checkbox" th:name="${el[0]}"/>
         <a th:text = "${el[0]} + ' ' +  ${el[1]} + ' ' +  ${el[2]} + ' ' +  ${el[3]} + ' ' +  ${el[4]}"/>
             <a th:href="'/' + ${el[0]}">О файле</a>
             <a th:href="'/d/' + ${el[0]}">Скачать</a>

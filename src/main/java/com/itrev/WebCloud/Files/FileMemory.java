@@ -57,7 +57,7 @@ public class FileMemory {
             List<String[]> list = new ArrayList<>();
             for (Map.Entry<String, Item> entry : fileSystem.entrySet()) {
                 Item  h = entry.getValue();
-                if (h.toString().contains(Info) &&
+                if (h.getTitle().contains(Info) &&
                         h.getUploadDate().after(fromD) &&
                         h.getUploadDate().before(toD) &&
                         h.getTitle().substring(h.getTitle().lastIndexOf(".")).toLowerCase().contains(dataType))
