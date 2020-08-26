@@ -6,6 +6,7 @@ import org.springframework.core.io.InputStreamResource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.zip.*;
 public class Archiver {
@@ -26,7 +27,7 @@ public class Archiver {
         }
         archive.close();
         InputStreamResource arc=new InputStreamResource(new FileInputStream(outname));
-        temp.delete();
+
         return arc;
     }
 }

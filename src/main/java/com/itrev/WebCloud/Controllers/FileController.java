@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -57,21 +59,14 @@ public class FileController {
         return "redirect:/Upload";
     }
     @PostMapping("/")
-    public ResponseEntity<Object> add_file(@RequestParam("nameList") List<String> nameList) throws Exception {
-        HttpHeaders headers = new HttpHeaders();
-
+    public ResponseEntity<Object> downloadArchive(@RequestParam("nameList") List<String> nameList) throws Exception {
         ResponseEntity<Object> resEntity = ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + new Date() + ".zip")
                 .contentType(MediaType.parseMediaType("application/x-zip-compressed"))
                 .body(Archiver.makeArchive(nameList));
+
         return resEntity;
     }
-    public void foo(@RequestParam("nameList[]") List<String> nameList) {
-        for(String number : nameList) {
-            System.out.println(number);
-        }
-    }
-
     @GetMapping("/{FileName}")
     public String FileInfo(@PathVariable(value = "FileName") String name, Model model) throws Exception {
         Item res = FileManager.ReadFile(name);
