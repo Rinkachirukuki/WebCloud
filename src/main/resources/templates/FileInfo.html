@@ -3,15 +3,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>О файле</title>
 </head>
 <body>
  <div th:each="el :${File}" class="alert alert-info mt-2">
-     <h1 th:text="${el.getTitle()}"/>
-     <h1 th:text="${el.getUploadDate().toString()}"/>
-     <h1 th:text="${el.getChangeDate().toString()}"/>
-     <h1 th:text="${el.getType()}"/>
-     <h1 th:text="${el.getSize().toString()}"/>
+     <h1>О файле</h1>
+     <h3 th:text="${el.getTitle()}"/>
+     <h3 th:text="${el.getUploadDate().toString()}"/>
+     <h3 th:text="${el.getChangeDate().toString()}"/>
+     <h3 th:text="${el.getType()}"/>
+     <h3 th:text="${el.getSize().toString()}"/>
      <div>
 
 

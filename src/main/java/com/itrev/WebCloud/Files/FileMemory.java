@@ -58,8 +58,8 @@ public class FileMemory {
             for (Map.Entry<String, Item> entry : fileSystem.entrySet()) {
                 Item  h = entry.getValue();
                 if (h.getTitle().contains(Info) &&
-                        h.getUploadDate().after(fromD) &&
-                        h.getUploadDate().before(toD) &&
+                        h.getChangeDate().after(fromD) &&
+                        h.getChangeDate().before(toD) &&
                         h.getTitle().substring(h.getTitle().lastIndexOf(".")).toLowerCase().contains(dataType))
                         {
                     list.add(h.toStringArray());

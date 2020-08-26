@@ -3,13 +3,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Загрузка файлов</title>
 </head>
 <body>
+<h3>Загрузка файлов</h3>
 <form method="post" enctype="multipart/form-data">
     <input type="file" name="file"/>
     <button type="submit">Загрузить</button>
     <p text="" th:text="${errInfo}"/>
 </form>
+<a href="/">На главную</a>
 </body>
 </html>

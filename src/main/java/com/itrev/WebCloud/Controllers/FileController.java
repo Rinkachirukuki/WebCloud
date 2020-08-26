@@ -49,8 +49,8 @@ public class FileController {
         if(!file.isEmpty()){
             String name=file.getOriginalFilename();
             long size=file.getSize();
-            if (!Validator.ValidateSize(size)) return "redirect:/?error=1";
-            if (!Validator.ValidateType(name)) return "redirect:/?error=2";
+            if (!Validator.ValidateSize(size)) return "redirect:/Upload?error=1";
+            if (!Validator.ValidateType(name)) return "redirect:/Upload?error=2";
             Item a = new Item(name,file.getContentType(),size,file.getBytes());
             FileManager.AddFile(a);
         }
