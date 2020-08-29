@@ -46,8 +46,8 @@ public class FrontController {
 
     //просмотр страницы загрузки
     @GetMapping("/Upload")
-    public String fileUploader(@RequestBody HttpMessage json, Model model) {
-        H
+    public String fileUploader( Model model) { // @RequestBody HttpMessage json,
+
         return "FileUploader";
     }
 
