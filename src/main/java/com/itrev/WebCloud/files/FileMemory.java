@@ -14,11 +14,11 @@ import java.util.*;
  * @author Matt
  */
 public class FileMemory {//класс, ответственный за размещение файлов в оперативной памяти
-    public static class MemoryException extends Exception{
-        public MemoryException() {
+    public static class FileMemoryException extends Exception{
+        public FileMemoryException() {
         }
 
-        public MemoryException(String message) {
+        public FileMemoryException(String message) {
             super(message);
         }
     }
@@ -28,17 +28,17 @@ public class FileMemory {//класс, ответственный за разм�
         if(!fileSystem.containsKey(file.getTitle()))
             fileSystem.put(file.getTitle(), file);
     }
-    public static Item readFile(String filename)throws MemoryException{//чтение файла
-        if(!fileSystem.containsKey(filename)) throw new MemoryException("Файл с таким именем не существует!");
+    public static Item readFile(String filename)throws FileMemoryException {//чтение файла
+        if(!fileSystem.containsKey(filename)) throw new FileMemoryException("Файл с таким именем не существует!");
         return fileSystem.get(filename);
     }
 
-    public static void removeFile(String filename)throws MemoryException{//удаление файла
-        if(!fileSystem.containsKey(filename)) throw new MemoryException("Файл с таким именем не существует!");
+    public static void removeFile(String filename)throws FileMemoryException {//удаление файла
+        if(!fileSystem.containsKey(filename)) throw new FileMemoryException("Файл с таким именем не существует!");
         fileSystem.remove(filename);
     }
-    public static void renameFile(String filename, String newfilename)throws MemoryException{//переименование файла
-        if(!fileSystem.containsKey(filename)) throw new MemoryException("Файл с таким именем не существует!");
+    public static void renameFile(String filename, String newfilename)throws FileMemoryException {//переименование файла
+        if(!fileSystem.containsKey(filename)) throw new FileMemoryException("Файл с таким именем не существует!");
         Item temp = fileSystem.get(filename);
         temp.setTitle(newfilename);
         temp.setChangeDate(new java.util.Date());

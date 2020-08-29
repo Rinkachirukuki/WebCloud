@@ -6,10 +6,7 @@ import com.itrev.WebCloud.models.Item;
 import com.itrev.WebCloud.repo.ItemRepository;
 import com.itrev.WebCloud.validator.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.cassandra.CassandraProperties;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.PathResource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -52,8 +49,7 @@ public class FileController {
 
     //просмотр страницы загрузки
     @GetMapping("/Upload")
-    public String fileUploader(@RequestParam(defaultValue = "", value="error") String err, Model model) {
-        model.addAttribute("errInfo",err);
+    public String fileUploader(Model model) {
         return "FileUploader";
     }
 
@@ -106,7 +102,7 @@ public class FileController {
             Item res = FileMemory.readFile(name);
             model.addAttribute("File", res);
         }
-        catch (FileMemory.MemoryException ex){
+        catch (FileMemory.FileMemoryException ex){
             model.addAttribute("errInfo",ex.getLocalizedMessage());
         }
         finally {
@@ -116,11 +112,12 @@ public class FileController {
 
     //скачивание файла
     @GetMapping("/d/{FileName}")
-    public ResponseEntity<Object> fileDownload(@PathVariable(value = "FileName") String name, Model model) {
+    public ResponseEntity<Object> fileDownload(@PathVariable(value = "FileName") String name, Model model) throws Exception {
         try {
             Item res = FileMemory.readFile(name);
             InputStream inStr = new ByteArrayInputStream(res.getFile());
             InputStreamResource inRes = new InputStreamResource(inStr);
+            inStr.close();
             HttpHeaders headers = new HttpHeaders();
             headers.add("Content-disposition",String.format("attachment", res.getTitle()));
             return ResponseEntity.ok().headers(headers)
@@ -128,7 +125,8 @@ public class FileController {
                     .contentLength(res.getSize())
                     .body(inRes);
         }
-        catch (FileMemory.MemoryException ex) {
+
+        catch (IOException ex){
             model.addAttribute("errInfo", ex.getLocalizedMessage());
             return ResponseEntity.noContent().build();
         }
@@ -140,9 +138,13 @@ public class FileController {
         try{
             if(new_name != ""){
                 FileMemory.renameFile(old_name,new_name);
+                old_name=new_name;
+            }
+            else{
+                model.addAttribute("errorInfo","Пустое имя файла!");
             }
         }
-        catch (FileMemory.MemoryException ex){
+        catch (FileMemory.FileMemoryException ex){
             model.addAttribute("errorInfo",ex.getLocalizedMessage());
         }
         finally {
@@ -156,7 +158,7 @@ public class FileController {
         try {
             FileMemory.removeFile(name);
         }
-        catch (FileMemory.MemoryException ex){
+        catch (FileMemory.FileMemoryException ex){
             model.addAttribute("errInfo",ex.getLocalizedMessage());
         }
         finally {
