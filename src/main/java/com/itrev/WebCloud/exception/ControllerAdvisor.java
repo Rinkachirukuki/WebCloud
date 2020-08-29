@@ -23,9 +23,5 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         model.addAttribute("errorInfo",ex.getLocalizedMessage());
         return ResponseEntity.noContent().build();
     }
-    @ExceptionHandler(IOException.class)
-    public ResponseEntity<Object> handleIOException(FileMemory.FileMemoryException ex, WebRequest request, Model model){
-        model.addAttribute("errorInfo",ex.getLocalizedMessage());
-        return ResponseEntity.noContent().build();
-    }
+    
 }
