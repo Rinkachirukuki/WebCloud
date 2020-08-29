@@ -1,6 +1,6 @@
-package com.itrev.WebCloud.Repo;
+package com.itrev.WebCloud.repo;
 
-import com.itrev.WebCloud.Models.Item;
+import com.itrev.WebCloud.models.Item;
 import org.springframework.data.repository.CrudRepository;
 
 public interface ItemRepository extends CrudRepository<Item,Long> {

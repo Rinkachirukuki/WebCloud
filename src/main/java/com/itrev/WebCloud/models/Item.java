@@ -1,7 +1,6 @@
-package com.itrev.WebCloud.Models;
+package com.itrev.WebCloud.models;
 
 import javax.persistence.*;
-import java.util.Arrays;
 import java.util.Date;
 
 @Entity
@@ -88,6 +87,16 @@ public class Item {
         return  title + ' ' + type + ' ' + size + ' ' + uploadDate + ' ' + changeDate;
     }
     public String[] toStringArray() {
-        return  new String[] {title, type, String.valueOf(size),  String.valueOf(uploadDate),  String.valueOf(changeDate)};
+
+        return  new String[] {title, type, convSize(),  String.valueOf(uploadDate),  String.valueOf(changeDate)};
+    }
+    private String convSize(){
+        double conv=size/1024;
+        if(conv>=1){
+            double convm= conv/1024;
+            if(convm>=1) return String.valueOf(convm).substring(0,4)+" Мбайт";
+            else return String.valueOf(conv)+" Кбайт";
+        }
+        else return String.valueOf(size)+" байт";
     }
 }

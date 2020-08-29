@@ -18,9 +18,11 @@
 
          <form method="post"> 
              <input type="text" th:value="${el.getTitle()}" name="rename"/>
-             <button type="submit"> Переименовать файл </button>
-         </form>  
+             <button type="submit" href="/"> Переименовать файл </button>
+         </form>
      </div>
+     <p text="" th:text="${errInfo}"/>
+     <a href="/">На главную</a>
  </div>
 </body>
 </html>
