@@ -9,7 +9,7 @@
 
     <div class="container mt-5">
         <h1>Файлы</h1>
-        <form method="post" enctype="multipart/form-data">
+        <form method="get" enctype="multipart/form-data">
         <div th:each = "el : ${fileInfo}">
             <input type="checkbox" th:value="${el[0]}" th:name="nameList"/>
         <a th:text = "${el[0]} + ' ' +  ${el[1]} + ' ' +  ${el[2]} + ' ' +  ${el[3]} + ' ' +  ${el[4]}"/>
@@ -17,7 +17,7 @@
             <a th:href="'/d/' + ${el[0]}">Скачать</a>
             <a th:href="'/remove/' + ${el[0]}">Удалить</a>
         </div>
-            <button type="submit">Скачать файлы</button>
+            <button formaction="/da" type="submit">Скачать файлы</button>
         </form>
 
         <div>Фильтр
