@@ -18,6 +18,7 @@
             <a th:href="'/remove/' + ${el[0]}">Удалить</a>
         </div>
             <button formaction="/da" type="submit">Скачать файлы</button>
+            <button formaction="/json" type="submit">Получить JSON</button>
         </form>
 
         <div>Фильтр
@@ -30,9 +31,13 @@
                     <option th:each = "el : ${dataTypes}" th:text ="${el}" th:value ="${el}"></option>
                 </select>
                 <button type="submit">Поиск</button>
+                <button formaction="/json/filter" type="submit">Результат в виде JSON</button>
             </form>
         </div>
-        <a href="/Upload">Загрузить файлы</a>
+        <form method="get">
+        <button formaction="/json/fileList" type="submit">Получить список имён файлов JSON</button>
+        </form>
+        <p><a href="/Upload">Загрузить файлы</a></p>
         <p text="" th:text="${errInfo}"/>
     </div>
 

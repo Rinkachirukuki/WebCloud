@@ -1,5 +1,8 @@
 package com.itrev.WebCloud.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -7,13 +10,22 @@ import java.util.Date;
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonIgnore
     private long id; //id для базы данных
+    @JsonProperty("title")
     private String title; //имя файла
+    @JsonProperty("type")
     private String type;// тип файла
+    @JsonProperty("size")
     private long size; //размер файла
+    @JsonProperty("uploadDate")
     private Date uploadDate;//дата загрузки
+    @JsonProperty("changeDate")
     private Date changeDate;//дата изменения
+    @JsonIgnore
     private byte[] file; //содержимое файла
+    @JsonProperty("link")
+    private String link; //ссылка для файла
 
     public Item(){};
     public Item(String title, String type, long size, byte[] file) {
@@ -23,9 +35,17 @@ public class Item {
         this.file = file;
         this.uploadDate=new Date();
         this.changeDate=new Date();
+        this.link="/d/"+title;
     }
-    
-    
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
     public long getId() {
         return id;
     }
@@ -84,12 +104,13 @@ public class Item {
 
     @Override
     public String toString() {
-        return  title + ' ' + type + ' ' + size + ' ' + uploadDate + ' ' + changeDate;
+        return  title + ' ' + type + ' ' + convSize() + ' ' + String.valueOf(uploadDate) + ' ' + String.valueOf(changeDate);
     }
     public String[] toStringArray() {
 
         return  new String[] {title, type, convSize(),  String.valueOf(uploadDate),  String.valueOf(changeDate)};
     }
+
     private String convSize(){
         double conv=size/1024;
         if(conv>=1){

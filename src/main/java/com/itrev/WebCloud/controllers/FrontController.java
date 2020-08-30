@@ -1,6 +1,7 @@
 package com.itrev.WebCloud.controllers;
 
 import com.itrev.WebCloud.archiver.Archiver;
+import com.itrev.WebCloud.exception.FileMemoryException;
 import com.itrev.WebCloud.files.FileMemory;
 import com.itrev.WebCloud.models.Item;
 import com.itrev.WebCloud.repo.ItemRepository;
@@ -40,71 +41,18 @@ public class FrontController {
         model.addAttribute("fileInfo", FileMemory.getItemsInfo(filter,format.parse(fromD),format.parse(toD),type));
         model.addAttribute("dataTypes", FileMemory.getItemsTypes());
         return "Files";
-
-
     }
-
     //просмотр страницы загрузки
     @GetMapping("/Upload")
-    public String fileUploader(@RequestBody HttpMessage json, Model model) {
-        H
+    public String fileUploader(Model model) {
         return "FileUploader";
     }
-
-
-
-
-
-
     //просмотр информации о файле
     @GetMapping("/{FileName}")
-    public String fileInfo(@PathVariable(value = "FileName") String name, Model model)  {
-        try {
-            Item res = FileMemory.readFile(name);
-            model.addAttribute("File", res);
-        }
-        catch (FileMemory.FileMemoryException ex){
-            model.addAttribute("errInfo",ex.getLocalizedMessage());
-        }
-        finally {
-            return "FileInfo";
-        }
+    public String fileInfo(@PathVariable(value = "FileName") String name, Model model) throws FileMemoryException {
+        Item res = FileMemory.readFile(name);
+        model.addAttribute("File", res);
+        return "FileInfo";
     }
 
-
-
-
-    //переименование файла
-    @PostMapping("/{filename}")
-    public String renameFile(@PathVariable("filename") String old_name, @RequestParam("rename") String new_name, Model model)  {
-        try{
-            if(new_name != ""){
-                FileMemory.renameFile(old_name,new_name);
-                old_name=new_name;
-            }
-            else{
-                model.addAttribute("errorInfo","Пустое имя файла!");
-            }
-        }
-        catch (FileMemory.FileMemoryException ex){
-            model.addAttribute("errorInfo",ex.getLocalizedMessage());
-        }
-        finally {
-            return "redirect:/";
-        }
-    }
-
-    //удаление
-    @GetMapping("/remove/{FileName}")
-    public String fileDelete(@PathVariable(value = "FileName") String name, Model model) {
-        try {
-            FileMemory.removeFile(name);
-        }
-        catch (FileMemory.FileMemoryException ex){
-            model.addAttribute("errInfo",ex.getLocalizedMessage());
-        }
-        finally {
-            return "redirect:/";
-        }
-    }
 }
