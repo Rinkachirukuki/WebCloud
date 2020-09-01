@@ -1,7 +1,9 @@
 package com.itrev.WebCloud.exception;
 
-import com.itrev.WebCloud.exception.FileMemoryException;
+import com.itrev.WebCloud.exception.FileMemoryExistingFileException;
 
+import com.itrev.WebCloud.messages.Message;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -19,26 +21,34 @@ import java.text.ParseException;
 
 @RestControllerAdvice
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
+
     @ExceptionHandler(RuntimeException.class)
-    public RuntimeException handleRuntimeException(RuntimeException ex){
-        return ex;
+    public Message handleRuntimeException(RuntimeException ex){
+        return new Message(ex.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
     }
-    @ExceptionHandler(FileMemoryException.class)
-    public ResponseEntity<Object> handleFileMemoryException(FileMemoryException ex){
-        return ResponseEntity.badRequest().body(ex);
+    @ExceptionHandler(FileMemoryExistingFileException.class)
+    public Message handleFileMemoryException(FileMemoryExistingFileException ex){
+        return new Message(ex.getLocalizedMessage(), HttpStatus.CONFLICT);
+    }
+    @ExceptionHandler(FileMemoryFileNotFoundException.class)
+    public Message handleFileMemoryFileNotFoundException(FileMemoryFileNotFoundException ex){
+        return new Message(ex.getLocalizedMessage(), HttpStatus.NOT_FOUND);
     }
     @ExceptionHandler(IOException.class)
-    public ResponseEntity<Object> handleIOException(IOException ex){
-        return ResponseEntity.badRequest().body(ex);
+    public Message handleIOException(IOException ex){
+        return new Message(ex.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @ExceptionHandler(ParseException.class)
-    public ResponseEntity<Object> ParseException(ParseException ex){
-        return ResponseEntity.badRequest().body(ex);
+    public Message ParseException(ParseException ex){
+        return new Message(ex.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @ExceptionHandler(SizeLimitExceededException.class)
-    public ResponseEntity<Object> SizeLimitExceededException(SizeLimitExceededException ex){
-        return ResponseEntity.badRequest().body(ex);
+    public Message SizeLimitExceededException(SizeLimitExceededException ex){
+        return new Message(ex.getLocalizedMessage(), HttpStatus.REQUEST_ENTITY_TOO_LARGE);
     }
-
+    @ExceptionHandler(Exception.class)
+    public Message handleException(Exception ex){
+        return new Message(ex.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
 }

@@ -1,7 +1,7 @@
 package com.itrev.WebCloud.controllers;
 
 import com.itrev.WebCloud.archiver.Archiver;
-import com.itrev.WebCloud.exception.FileMemoryException;
+import com.itrev.WebCloud.exception.FileMemoryFileNotFoundException;
 import com.itrev.WebCloud.files.FileMemory;
 import com.itrev.WebCloud.models.Item;
 import com.itrev.WebCloud.repo.ItemRepository;
@@ -49,7 +49,7 @@ public class FrontController {
     }
     //просмотр информации о файле
     @GetMapping("/{FileName}")
-    public String fileInfo(@PathVariable(value = "FileName") String name, Model model) throws FileMemoryException {
+    public String fileInfo(@PathVariable(value = "FileName") String name, Model model) throws FileMemoryFileNotFoundException {
         Item res = FileMemory.readFile(name);
         model.addAttribute("File", res);
         return "FileInfo";

@@ -1,12 +1,16 @@
 package com.itrev.WebCloud.controllers;
 
 import com.itrev.WebCloud.archiver.Archiver;
-import com.itrev.WebCloud.exception.FileMemoryException;
+import com.itrev.WebCloud.exception.FileMemoryExistingFileException;
+import com.itrev.WebCloud.exception.FileMemoryFileNotFoundException;
+
 import com.itrev.WebCloud.files.FileMemory;
+import com.itrev.WebCloud.messages.Message;
 import com.itrev.WebCloud.models.Item;
 import com.itrev.WebCloud.validator.Validator;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -19,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,7 +37,7 @@ public class BackController {
     }
 
     @GetMapping("/json/{fileName}")
-    public Item fileInfo(@PathVariable(value = "FileName") String name, Model model) throws FileMemoryException {
+    public Item fileInfo(@PathVariable(value = "FileName") String name, Model model) throws FileMemoryFileNotFoundException {
        return FileMemory.readFile(name);
     }
 
@@ -59,7 +64,7 @@ public class BackController {
     }
     //скачивание файла
     @GetMapping("/d/{FileName}")
-    public ResponseEntity<Object> fileDownload(@PathVariable(value = "FileName") String name) throws Exception {
+    public ResponseEntity<Object> fileDownload(@PathVariable(value = "FileName") String name) throws FileMemoryFileNotFoundException,IOException {
         Item res = FileMemory.readFile(name);
         InputStream inStr = new ByteArrayInputStream(res.getFile());
         InputStreamResource inRes = new InputStreamResource(inStr);
@@ -73,44 +78,50 @@ public class BackController {
     }
     //загрузка файлов
     @RequestMapping(method = RequestMethod.POST, value = "/Upload",headers="Accept=application/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> fileUploader(@RequestParam("file") MultipartFile file) throws IOException,FileMemoryException{
-
+    public Message fileUploader(@RequestParam("file") MultipartFile file) throws IOException,FileMemoryExistingFileException{
+        Message resp=new Message("Файл пуст!",HttpStatus.BAD_REQUEST);
+        List<String> errors=new ArrayList<>();
         if(!file.isEmpty()){
             long size=file.getSize();
-            if (!Validator.validateSize(size)) {
-                return ResponseEntity.badRequest().headers(new HttpHeaders())
-                        .contentType(MediaType.parseMediaType("application/json"))
-                        .body(new Error("Ошибка валидации! Невозможно определить формат файла"));
-            }
             String name=file.getOriginalFilename();
-            if (!Validator.validateType(name)){
-                return ResponseEntity.badRequest().headers(new HttpHeaders())
-                        .contentType(MediaType.parseMediaType("application/json"))
-                        .body(new Error("Ошибка валидации! Невозможно определить формат файла"));
+            if (!Validator.validateSize(size)) {
+                resp.setInfo("Ошибка валидации!");
+                resp.setCode(HttpStatus.BAD_REQUEST);
+                errors.add("Превышен максимальный размер файла!");
+
             }
-            Item a = new Item(name,file.getContentType(),size,file.getBytes());
-            FileMemory.addFile(a);
-        }
-        return ResponseEntity.ok().headers(new HttpHeaders())
-                .contentType(MediaType.parseMediaType("application/json")).body("Файл успешно загружен");
+            if (!Validator.validateType(name)){
+                    resp.setInfo("Ошибка валидации!");
+                    resp.setCode(HttpStatus.BAD_REQUEST);
+                    errors.add("Невозможно определить формат файла!");
+                }
+            if(errors.isEmpty()){
+                    Item a = new Item(name,file.getContentType(),size,file.getBytes());
+                    FileMemory.addFile(a);
+                    resp.setInfo("Файл успешно загружен!");
+                    resp.setCode(HttpStatus.CREATED);
+
+                }
+
+            }
+
+        
+        resp.setValidationErorrs(errors);
+        return resp;
     }
     @RequestMapping(method = RequestMethod.POST, value = "/{filename}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> renameFile(@PathVariable("filename") String old_name, @RequestParam("rename") String new_name)  throws FileMemoryException {
+    public Message renameFile(@PathVariable("filename") String old_name, @RequestParam("rename") String new_name)  throws FileMemoryFileNotFoundException {
             if(new_name != ""){
                 FileMemory.renameFile(old_name,new_name);
-                return ResponseEntity.ok().headers(new HttpHeaders())
-                        .contentType(MediaType.parseMediaType("application/json")).body("Файл успешно переименован!");
+                return new Message("Файл успешно переименован!", HttpStatus.OK);
             }
-            else return ResponseEntity.badRequest().headers(new HttpHeaders())
-                .contentType(MediaType.parseMediaType("application/json"))
-                .body(new Error("Ошибка! Имя файла не может быть пустым"));
+            else return new Message("Имя файла не может быть пустым!", HttpStatus.BAD_REQUEST);
     }
 
     //удаление
     @RequestMapping(method = RequestMethod.GET, value = "/remove/{FileName}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> fileDelete(@PathVariable(value = "FileName") String name) throws FileMemoryException {
+    public Message fileDelete(@PathVariable(value = "FileName") String name) throws FileMemoryFileNotFoundException {
         FileMemory.removeFile(name);
-        return ResponseEntity.ok().headers(new HttpHeaders())
-                .contentType(MediaType.parseMediaType("application/json")).body("Файл успешно удалён!");
+        return new Message("Файл успешно удалён!", HttpStatus.OK);
     }
 }

@@ -6,7 +6,8 @@ package com.itrev.WebCloud.files;
  * and open the template in the editor.
  */
 import com.itrev.WebCloud.models.Item;
-import com.itrev.WebCloud.exception.FileMemoryException;
+import com.itrev.WebCloud.exception.FileMemoryFileNotFoundException;
+import com.itrev.WebCloud.exception.FileMemoryExistingFileException;
 import java.util.*;
 
 /**
@@ -16,22 +17,22 @@ import java.util.*;
 public class FileMemory {//класс, ответственный за размещение файлов в оперативной памяти
     private static Map<String, Item> fileSystem=new HashMap <>();//файловое хранилище
 
-    public static void addFile(Item file) throws FileMemoryException{//добавление файла
+    public static void addFile(Item file) throws FileMemoryExistingFileException{//добавление файла
         if(!fileSystem.containsKey(file.getTitle()))
             fileSystem.put(file.getTitle(), file);
-        else throw new FileMemoryException("Попытка добавить существующий файл!");
+        else throw new FileMemoryExistingFileException("Попытка добавить существующий файл!");
     }
-    public static Item readFile(String filename)throws FileMemoryException {//чтение файла
-        if(!fileSystem.containsKey(filename)) throw new FileMemoryException("Файл с таким именем не существует!");
+    public static Item readFile(String filename)throws FileMemoryFileNotFoundException {//чтение файла
+        if(!fileSystem.containsKey(filename)) throw new FileMemoryFileNotFoundException("Файл с таким именем не существует!");
         return fileSystem.get(filename);
     }
 
-    public static void removeFile(String filename)throws FileMemoryException {//удаление файла
-        if(!fileSystem.containsKey(filename)) throw new FileMemoryException("Файл с таким именем не существует!");
+    public static void removeFile(String filename)throws FileMemoryFileNotFoundException {//удаление файла
+        if(!fileSystem.containsKey(filename)) throw new FileMemoryFileNotFoundException("Файл с таким именем не существует!");
         fileSystem.remove(filename);
     }
-    public static void renameFile(String filename, String newfilename)throws FileMemoryException {//переименование файла
-        if(!fileSystem.containsKey(filename)) throw new FileMemoryException("Файл с таким именем не существует!");
+    public static void renameFile(String filename, String newfilename)throws FileMemoryFileNotFoundException {//переименование файла
+        if(!fileSystem.containsKey(filename)) throw new FileMemoryFileNotFoundException("Файл с таким именем не существует!");
         Item temp = fileSystem.get(filename);
         String fName=temp.getTitle();
         String afterDot=fName.substring(fName.lastIndexOf(".")).toLowerCase();

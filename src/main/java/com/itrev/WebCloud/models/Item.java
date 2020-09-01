@@ -2,16 +2,19 @@ package com.itrev.WebCloud.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import java.util.Date;
 
+import javax.validation.constraints.*;
 @Entity
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonIgnore
     private long id; //id для базы данных
+    @NotNull
     @JsonProperty("title")
     private String title; //имя файла
     @JsonProperty("type")
