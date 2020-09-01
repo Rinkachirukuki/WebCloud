@@ -105,8 +105,7 @@ public class BackController {
 
             }
 
-        
-        resp.setValidationErorrs(errors);
+        if(!errors.isEmpty()) resp.setValidationErorrs(errors);
         return resp;
     }
     @RequestMapping(method = RequestMethod.POST, value = "/{filename}",produces = MediaType.APPLICATION_JSON_VALUE)
